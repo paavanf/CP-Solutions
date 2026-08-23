@@ -1,23 +1,17 @@
 class Solution {
 public:
-    void f(int idx,vector<int>&nums,vector<int>&temp,vector<vector<int>>&ans)
+   void f(int idx,vector<int>&nums,vector<int>&temp,vector<vector<int>>&ans)
     {
         int n=nums.size();
-        if(idx==n)
+        ans.push_back(temp);
+        for(int i=idx;i<n;i++)
         {
-            ans.push_back(temp);
-            return;
+            if(i>idx && nums[i]==nums[i-1])
+            continue;
+            temp.push_back(nums[i]);
+            f(i+1,nums,temp,ans);
+            temp.pop_back();
         }
-        //take;
-        temp.push_back(nums[idx]);
-        f(idx+1,nums,temp,ans);
-        temp.pop_back();
-        //not take
-        int i=idx+1;
-        while(i<n && nums[i]==nums[idx])
-        i++;
-        f(i,nums,temp,ans);
-
     }
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>>ans;
