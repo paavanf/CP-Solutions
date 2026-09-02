@@ -1,32 +1,28 @@
 class Solution {
 public:
     vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
-        vector<int>temp=nums;
-        sort(temp.begin(),temp.end());
         int n=nums.size();
-        //now form vector of groups where each number inside the grp follows the ops that is asked
-        vector<vector<int>>grps;
-        unordered_map<int,int>grpID;
-        //create groups
-        int id=-1;
+        vector<pair<int,int>>v(n);
         for(int i=0;i<n;i++)
+        v[i]={nums[i],i};
+        sort(v.begin(),v.end());
+        //connected components
+        priority_queue<int,vector<int>,greater<int>>pq;
+        int l=0;
+        while(l<n)
         {
-            if(i==0 || temp[i]-temp[i-1]>limit)
+            int r=l;
+            //find the connected component
+            while(r+1<n && v[r+1].first-v[r].first<=limit)
+            r++;
+            for(int i=l;i<=r;i++)
+            pq.push(v[i].second);
+            for(int i=l;i<=r;i++)
             {
-                grps.push_back({});
-                id++;
+                nums[pq.top()]=v[i].first;
+                pq.pop();
             }
-            grps[id].push_back(temp[i]);
-            grpID[temp[i]]=id;
-        }
-        //keep track of how many elements we have take from each grp
-        int sz=grps.size();
-        vector<int>idx(sz,0);//this will act as a pointer for each group
-        for(int i=0;i<n;i++)
-        {
-            int id=grpID[nums[i]];
-            nums[i]=grps[id][idx[id]];
-            idx[id]++;
+            l=r+1;
         }
         return nums;
     }
