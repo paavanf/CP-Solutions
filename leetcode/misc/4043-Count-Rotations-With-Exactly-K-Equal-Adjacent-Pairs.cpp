@@ -5,7 +5,7 @@ public:
         int score=0;
         for(int i=0;i<n-1;i++)
         {
-            if(s[i]==s[i+1])
+            if(s[i]==s[(i+1)%n])
             score++;
         }
         if(s[n-1]==s[0])
