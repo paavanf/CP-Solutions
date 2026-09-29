@@ -27,8 +27,8 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         //for paranthesis to match path length must be even
-        if((m+n-1)%2!=0)
-        return false;
+        //if((m+n-1)%2!=0)
+        //return false;
         if(grid[0][0]==')')
         return false;
         if(grid[m-1][n-1]=='(')
