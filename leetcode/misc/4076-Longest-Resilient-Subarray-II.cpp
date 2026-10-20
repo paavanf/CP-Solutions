@@ -1,22 +1,43 @@
 class Solution {
 public:
-    int resilientSubarray(vector<int>& nums, int k) {
-         int n = nums.size();
-        int len = 1;
-        int maxLen = 1;
-        int sum = nums[0];
-        for(int i = 1 ; i < n ; i++){
-            if(nums[i]%k == nums[i-1]%k){
-                len++;
-                sum = (sum + nums[i] % k ) % k;
+    int resilientSubarray(vector<int>& arr, int k) {
+        int n = arr.size();
+
+        int result = 1, l = 0;
+        int stepCounter = 0;
+        for (int r = 0; r < n; r++) {
+            int remainder = arr[r] % k;
+            if ((r == 0 )|| (remainder != arr[r - 1] % k)) {
+                l = r;
+                stepCounter = (k / gcd(remainder, k));
             }
-            else{
-                len = 1;
-                sum = nums[i];
+
+            // if that's not, then maximize
+            int sz = r - l + 1;
+            if ((sz - 1) % stepCounter == 0) {
+                result = max(result, sz);
             }
-            if(sum == (nums[i] % k))
-                maxLen = max(maxLen,len);
         }
-        return maxLen;
+
+        return result;
     }
 };
+
+/*\
+
+    (len - 1) * (curr el )  % k
+
+    all subrays -> n sq 
+
+    When is a subarray valid?
+    1. if for every position, deleting it leaves sum % k == 0
+
+    length of longest such array
+
+    for all elements if we are having the % remainder condition
+    then all elements in the subarray must have a rem = arr[i] % k being equal to every other element
+
+    so usingit, we coudl take it step wise as in move the elem as step of k which was initial / gcd(k, remainder)
+
+    
+*/
